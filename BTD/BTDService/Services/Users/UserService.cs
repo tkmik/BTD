@@ -13,8 +13,7 @@ namespace BTDService.Services.Users
         private readonly AppDbContext _dbContext;
         public UserService()
         {
-            _dbContext = new AppDbContext();
-            
+            _dbContext = new AppDbContext();            
         }
 
         public void Dispose()
@@ -30,7 +29,12 @@ namespace BTDService.Services.Users
         public List<User> GetAllUsers()
         {
             return _dbContext.Users.ToList();
-        }       
+        }
+
+        public async Task<List<User>> GetAllUsersAsync()
+        {
+            return await _dbContext.Users.ToListAsync();
+        }
 
         public User GetUserById(int id)
         {

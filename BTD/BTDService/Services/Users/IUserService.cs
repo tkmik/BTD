@@ -16,6 +16,7 @@ namespace BTDService.Services.Users
         User GetUserByLogin(string login);
         Task<User> GetUserByLoginAsync(string login);
         List<User> GetAllUsers();
+        Task<List<User>> GetAllUsersAsync();
         string UpdateUser(User user);
         Task<string> UpdateUserAsync(User user);        
     }
