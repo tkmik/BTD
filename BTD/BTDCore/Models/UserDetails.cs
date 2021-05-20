@@ -23,6 +23,6 @@ namespace BTDCore.Models
         [Required]
         public string SerialNumber { get; set; }
         [Required]
-        public User User { get; set; }
+        public virtual User User { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 
 namespace BTDCore.Models
@@ -17,10 +18,12 @@ namespace BTDCore.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
         [Required]
-        public Role Role { get; set; }
+        [ForeignKey("Role")]
+        public int RoleId { get; set; }
+        public virtual Role Role { get; set; }
         [Required]
-        public UserProfile UserDetails { get; set; }
+        public virtual UserProfile UserDetails { get; set; }
         [Required]
-        public UserCapability UserCapabilities { get; set; }
+        public virtual UserCapability UserCapabilities { get; set; }
     }
 }

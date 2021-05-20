@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace BTDCore.Models
 {
+    public enum TypeOfDocumentEnum
+    {
+        Technical = 1,
+        Design
+    }
     public class TypeOfDocument
     {
         [Key]
@@ -14,7 +19,7 @@ namespace BTDCore.Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        public ICollection<Card> Karts { get; set; }
+        public virtual ICollection<Card> Karts { get; set; }
         public TypeOfDocument()
         {
             Karts = new List<Card>();

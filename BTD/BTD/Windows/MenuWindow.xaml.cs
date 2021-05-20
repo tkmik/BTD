@@ -1,18 +1,11 @@
-﻿using BTDService.Services.Users;
-using MaterialDesignThemes.Wpf;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BTDService.Services.db.Users;
+using BTDService.Services.db.Cards;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Threading.Tasks;
+using BTDCore.Models;
+using System.Collections.Generic;
 
 namespace BTD.Windows
 {
@@ -22,11 +15,12 @@ namespace BTD.Windows
     public partial class MenuWindow : Window
     {
         private readonly IUserService _userService;
+        private readonly ICardService _cardService;
         public MenuWindow()
         {
             InitializeComponent();
-            _userService = new UserService();            
-            DataGrid.ItemsSource = _userService.GetAllUsers();
+            _userService = new UserService();
+            _cardService = new CardService();
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -59,7 +53,29 @@ namespace BTD.Windows
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
-        }        
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            DataGrid.ItemsSource = _userService.GetAllUsersDetails();        
+        }
+
+        private void Documentation_Click(object sender, RoutedEventArgs e)
+        {
+            
+            if ((bool)AllDocumentation.IsChecked)
+            {
+                DataGrid.ItemsSource = _cardService.GetAllDocumnetation();
+            }
+            if ((bool)TechDocumentation.IsChecked)
+            {
+                DataGrid.ItemsSource = _cardService.GetTechDocumnetation();
+            }
+            if ((bool)DesDocumentation.IsChecked)
+            {
+                DataGrid.ItemsSource = _cardService.GetDesDocumnetation();
+            }
+        }
 
         //private void CheckBox_Checked(object sender, RoutedEventArgs e)
         //{

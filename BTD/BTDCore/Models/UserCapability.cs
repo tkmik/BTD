@@ -39,6 +39,6 @@ namespace BTDCore.Models
         public bool CanDeleteUser { get; set; }
         [Required]
         [ConcurrencyCheck]
-        public User User { get; set; }
+        public virtual User User { get; set; }
     }
 }

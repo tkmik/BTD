@@ -8,6 +8,6 @@ namespace BTDService.Services.Validation
 {
     public interface IValidation
     {
-        Task<ValidationType> ValidationUserByPassword(string login, string password);
+        ValidationType ValidationUserByPassword(string login, string password);
     }
 }

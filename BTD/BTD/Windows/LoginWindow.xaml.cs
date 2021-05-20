@@ -1,10 +1,7 @@
-﻿using BTDCore.Models;
-using BTDService.Services.Crypto;
-using BTDService.Services.Users;
+﻿using BTDService.Services.Crypto;
 using BTDService.Services.Validation;
 using System;
 using System.Media;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -63,12 +60,12 @@ namespace BTD.Windows
             }
         }
 
-        private async void LoginButton_Click(object sender, RoutedEventArgs e)
+        private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             ICrypto crypt = new CryptoService();
             ValidationUser validation = new ValidationUser();
-            switch (await validation.ValidationUserByPassword(
-                UsernameTextBox.Text, 
+            switch (validation.ValidationUserByPassword(
+                UsernameTextBox.Text,
                 crypt.Encrypt(UsernamePasswordBox.Password)))
             {
                 case ValidationType.Login:
@@ -83,7 +80,7 @@ namespace BTD.Windows
                     SystemSounds.Hand.Play();
                     MessageBox.Show("Login or password has been wrong!");
                     break;
-            }          
+            }
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)

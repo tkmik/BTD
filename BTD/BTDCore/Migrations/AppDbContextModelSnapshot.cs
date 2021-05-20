@@ -90,6 +90,22 @@ namespace BTDCore.Migrations
                     b.ToTable("Cards");
                 });
 
+            modelBuilder.Entity("BTDCore.Models.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
             modelBuilder.Entity("BTDCore.Models.TypeOfDocument", b =>
                 {
                     b.Property<int>("Id")
@@ -121,11 +137,12 @@ namespace BTDCore.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
@@ -205,6 +222,161 @@ namespace BTDCore.Migrations
                     b.ToTable("UserProfiles");
                 });
 
+            modelBuilder.Entity("BTDCore.ViewModels.AllDocumentation", b =>
+                {
+                    b.Property<int>("A0")
+                        .HasColumnType("int");
+
+                    b.Property<int>("A1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("A2")
+                        .HasColumnType("int");
+
+                    b.Property<int>("A3")
+                        .HasColumnType("int");
+
+                    b.Property<int>("A4")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateOfChanges")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateOfRegistration")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Designation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsCanceled")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsTemporary")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NumberOfSheets")
+                        .HasColumnType("int");
+
+                    b.ToView("View_AllDocumentation");
+                });
+
+            modelBuilder.Entity("BTDCore.ViewModels.DesDocumentation", b =>
+                {
+                    b.Property<int>("A0")
+                        .HasColumnType("int");
+
+                    b.Property<int>("A1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("A2")
+                        .HasColumnType("int");
+
+                    b.Property<int>("A3")
+                        .HasColumnType("int");
+
+                    b.Property<int>("A4")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateOfChanges")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateOfRegistration")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Designation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsCanceled")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsTemporary")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NumberOfSheets")
+                        .HasColumnType("int");
+
+                    b.ToView("View_DesDocumentation");
+                });
+
+            modelBuilder.Entity("BTDCore.ViewModels.TechDocumentation", b =>
+                {
+                    b.Property<int>("A0")
+                        .HasColumnType("int");
+
+                    b.Property<int>("A1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("A2")
+                        .HasColumnType("int");
+
+                    b.Property<int>("A3")
+                        .HasColumnType("int");
+
+                    b.Property<int>("A4")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateOfChanges")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateOfRegistration")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Designation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsCanceled")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsTemporary")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NumberOfSheets")
+                        .HasColumnType("int");
+
+                    b.ToView("View_TechDocumentation");
+                });
+
+            modelBuilder.Entity("BTDCore.ViewModels.ViewUserDetails", b =>
+                {
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Login")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SerialNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToView("View_UserDetails");
+                });
+
             modelBuilder.Entity("BTDCore.Models.Card", b =>
                 {
                     b.HasOne("BTDCore.Models.TypeOfDocument", "TypeOfDocument")
@@ -214,6 +386,17 @@ namespace BTDCore.Migrations
                         .IsRequired();
 
                     b.Navigation("TypeOfDocument");
+                });
+
+            modelBuilder.Entity("BTDCore.Models.User", b =>
+                {
+                    b.HasOne("BTDCore.Models.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("BTDCore.Models.UserCapability", b =>
@@ -236,6 +419,11 @@ namespace BTDCore.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BTDCore.Models.Role", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("BTDCore.Models.TypeOfDocument", b =>
