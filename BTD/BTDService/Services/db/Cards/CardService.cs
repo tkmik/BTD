@@ -26,13 +26,28 @@ namespace BTDService.Services.db.Cards
             await _dbContext.DisposeAsync();
         }
 
-        public List<AllDocumentation> GetAllDocumnetation()
+        public List<Documentation> GetDocumentationByDesignation(string searchWord)
         {
-            return _dbContext.AllDocumentations.ToList();
+            return _dbContext.AllDocumentations.Where(card => card.Designation.Contains(searchWord)).ToList<Documentation>();
         }
-        public async Task<List<AllDocumentation>> GetAllDocumnetationAsync()
+
+        public List<Documentation> GetDocumentationByName(string searchWord)
         {
-            return  await _dbContext.AllDocumentations.ToListAsync();
+            return _dbContext.AllDocumentations.Where(card => card.Name.Contains(searchWord)).ToList<Documentation>();
+        }
+
+        public List<Documentation> GetAllDocumentation(string searchWord = default)
+        {
+            if (searchWord is not null)
+            {
+                var documentation = GetDocumentationByName(searchWord)
+                    .Union(GetDocumentationByDesignation(searchWord));
+                if (documentation is not null)
+                {
+                    return documentation.ToList();
+                }
+            }
+            return _dbContext.AllDocumentations.ToList<Documentation>();
         }
 
         public Card GetById(int id)
@@ -50,19 +65,34 @@ namespace BTDService.Services.db.Cards
             return _dbContext.Cards.Where(card => card.TypeId == type).ToList();
         }
 
-        public async Task<List<Card>> GetCardByTypeAsync(int type)
+        public List<Documentation> GetDesDocumentation(string searchWord = default)
         {
-            return await _dbContext.Cards.Where(card => card.TypeId == type).ToListAsync();
+            if (searchWord is not null)
+            {
+                var documentation = GetDocumentationByName(searchWord)
+                    .Union(GetDocumentationByDesignation(searchWord))
+                    .Where(card => card.TypeId == 1);
+                if (documentation is not null)
+                {
+                    return documentation.ToList();
+                }
+            }
+            return _dbContext.DesDocumentations.ToList<Documentation>();
         }
 
-        public List<DesDocumentation> GetDesDocumnetation()
+        public List<Documentation> GetTechDocumentation(string searchWord = default)
         {
-            return _dbContext.DesDocumentations.ToList();
-        }
-
-        public List<TechDocumentation> GetTechDocumnetation()
-        {
-            return _dbContext.TechDocumentations.ToList();
+            if (searchWord is not null)
+            {
+                var documentation = GetDocumentationByName(searchWord)
+                    .Union(GetDocumentationByDesignation(searchWord))
+                    .Where(card => card.TypeId == 2);
+                if (documentation is not null)
+                {
+                    return documentation.ToList();
+                }
+            }
+            return _dbContext.TechDocumentations.ToList<Documentation>();
         }
 
         public void Load()
@@ -81,12 +111,12 @@ namespace BTDService.Services.db.Cards
             {
                 _dbContext.Entry(item).State = EntityState.Modified;
                 //_dbContext.Users.Update(user);
-                _dbContext.SaveChanges();
-                return "User has updated!";
+                Save();
+                return "Card has updated!";
             }
             else
             {
-                return "User have not found!";
+                return "Card have not found!";
             }
         }
 
@@ -96,13 +126,74 @@ namespace BTDService.Services.db.Cards
             {
                 _dbContext.Entry(item).State = EntityState.Modified;
                 //_dbContext.Users.Update(user);
-                await _dbContext.SaveChangesAsync();
-                return "User has updated!";
+                await SaveAsync();
+                return "Card has updated!";
             }
             else
             {
-                return "User have not found!";
+                return "Card have not found!";
             }
+        }
+
+        public void Add(Card item)
+        {
+            if (item is not null)
+            {
+                _dbContext.Add(item);
+                Save();
+            }
+        }
+
+        public async Task AddAsync(Card item)
+        {
+            if (item is not null)
+            {
+                await _dbContext.AddAsync(item);
+                await SaveAsync();
+            }
+        }
+
+        public void Save()
+        {
+            _dbContext.SaveChanges();
+        }
+
+        public async Task SaveAsync()
+        {
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public List<string> GetTypesOfDocumentation()
+        {
+            return _dbContext.TypesOfDocument.Select(item => item.Name).ToList();
+        }
+
+        public string GetTypeOfDocument(int number)
+        {
+            return _dbContext.TypesOfDocument.FirstOrDefault(type => type.Id == number).Name;
+        }
+
+        public Card GetCardByDesignation(string designation)
+        {
+            return _dbContext.Cards.FirstOrDefault(card => card.Designation == designation);
+        }
+
+        public string Delete(int id)
+        {
+            var item = GetById(id);
+            if (item is not null)
+            {
+                _dbContext.Entry(item).State = EntityState.Deleted;
+                //_dbContext.Users.Update(user);
+                Save();
+                return "Card was deleted";
+            }
+            else
+            {
+                return "Card was not deleted";
+            }
+            //_dbContext.Cards.Remove(GetById(id));
+
         }
     }
 }

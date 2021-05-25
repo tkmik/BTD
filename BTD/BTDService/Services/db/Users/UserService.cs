@@ -3,7 +3,6 @@ using BTDCore.Models;
 using BTDCore.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,6 +15,21 @@ namespace BTDService.Services.db.Users
         {
             _dbContext = new AppDbContext();
             Load();
+        }
+
+        public void Add(User item)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task AddAsync(User item)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public string Delete(int id)
+        {
+            throw new System.NotImplementedException();
         }
 
         public void Dispose()
@@ -73,6 +87,16 @@ namespace BTDService.Services.db.Users
             await _dbContext.Users.LoadAsync();
         }
 
+        public void Save()
+        {
+            _dbContext.SaveChanges();
+        }
+
+        public async Task SaveAsync()
+        {
+            await _dbContext.SaveChangesAsync();
+        }
+
         public string Update(User item)
         {
             if (GetById(item.Id) is not null)
@@ -90,7 +114,7 @@ namespace BTDService.Services.db.Users
 
         public async Task<string> UpdateAsync(User item)
         {
-            if (await GetByIdAsync (item.Id) is not null)
+            if (await GetByIdAsync(item.Id) is not null)
             {
                 _dbContext.Entry(item).State = EntityState.Modified;
                 //_dbContext.Users.Update(user);

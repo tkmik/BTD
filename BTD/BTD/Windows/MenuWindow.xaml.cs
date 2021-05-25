@@ -1,11 +1,10 @@
-﻿using BTDService.Services.db.Users;
+﻿using BTDCore.ViewModels;
 using BTDService.Services.db.Cards;
+using BTDService.Services.db.Users;
+using System.Media;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Threading.Tasks;
-using BTDCore.Models;
-using System.Collections.Generic;
 
 namespace BTD.Windows
 {
@@ -16,6 +15,7 @@ namespace BTD.Windows
     {
         private readonly IUserService _userService;
         private readonly ICardService _cardService;
+        private bool DataGridAllSize = false;
         public MenuWindow()
         {
             InitializeComponent();
@@ -57,24 +57,86 @@ namespace BTD.Windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            DataGrid.ItemsSource = _userService.GetAllUsersDetails();        
+            DataGrid.ItemsSource = _cardService.GetAllDocumentation();
         }
 
         private void Documentation_Click(object sender, RoutedEventArgs e)
         {
-            
-            if ((bool)AllDocumentation.IsChecked)
+
+            if ((bool)AllDocumentationRadioButton.IsChecked)
             {
-                DataGrid.ItemsSource = _cardService.GetAllDocumnetation();
+                DataGrid.ItemsSource = _cardService.GetAllDocumentation();
             }
-            if ((bool)TechDocumentation.IsChecked)
+            if ((bool)TechDocumentationRadioButton.IsChecked)
             {
-                DataGrid.ItemsSource = _cardService.GetTechDocumnetation();
+                DataGrid.ItemsSource = _cardService.GetTechDocumentation();
             }
-            if ((bool)DesDocumentation.IsChecked)
+            if ((bool)DesDocumentationRadioButton.IsChecked)
             {
-                DataGrid.ItemsSource = _cardService.GetDesDocumnetation();
+                DataGrid.ItemsSource = _cardService.GetDesDocumentation();
             }
+        }
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            if ((bool)AllDocumentationRadioButton.IsChecked)
+            {
+                DataGrid.ItemsSource = _cardService.GetAllDocumentation(SearchTextBox.Text);
+            }
+            if ((bool)TechDocumentationRadioButton.IsChecked)
+            {
+                DataGrid.ItemsSource = _cardService.GetTechDocumentation(SearchTextBox.Text);
+            }
+            if ((bool)DesDocumentationRadioButton.IsChecked)
+            {
+                DataGrid.ItemsSource = _cardService.GetDesDocumentation(SearchTextBox.Text);
+            }
+        }
+
+        private void TreeOnButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!DataGridAllSize)
+            {
+                DataGrid.Margin = new Thickness(10);
+                DataGridAllSize = true;
+            }
+            else
+            {
+                DataGrid.Margin = new Thickness(160,10,10,10);
+                DataGridAllSize = false;
+            }
+        }
+
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            AddUpdateDocumentationWindow window = new AddUpdateDocumentationWindow();
+            window.Show();
+            window.Topmost = true;
+        }
+
+        private void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataGrid.SelectedItem is not null)
+            {
+                AddUpdateDocumentationWindow window = new AddUpdateDocumentationWindow((Documentation)DataGrid.SelectedItem);
+                window.Owner = this;
+                window.Show();
+                window.Topmost = true;
+            }
+            else
+            {
+                SystemSounds.Hand.Play();
+                MessageBox.Show("Запись не выбрана!");
+            }
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataGrid.SelectedItem is not null)
+            {
+                _cardService.Delete(_cardService.GetCardByDesignation(((Documentation)DataGrid.SelectedItem).Designation).Id);
+            }
+            Documentation_Click(sender, e);
         }
 
         //private void CheckBox_Checked(object sender, RoutedEventArgs e)

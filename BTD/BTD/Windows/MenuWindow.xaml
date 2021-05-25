@@ -23,7 +23,7 @@
         <Color x:Key="DarkGray">#3e4c5e</Color>
     </Window.Resources>
 
-    <Border CornerRadius="20">
+    <Border CornerRadius="20"  BorderThickness="1" BorderBrush="Black">
         <Border.Background>
             <LinearGradientBrush>
                 <GradientStop x:Name="FirstColorLine" Color="{StaticResource LightBlue}"  Offset="0.0"/>
@@ -43,6 +43,7 @@
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
                        Foreground="Gray"
+                       FontFamily="Helvetica"
                        FontWeight="DemiBold"
                        FontSize="16"/>
             <iconPacksLight:PackIconMaterialLight Kind="ArrangeSendToBack" Width="80"
@@ -50,34 +51,141 @@
                                                 VerticalAlignment="Center" 
                                                 HorizontalAlignment="Center" 
                                                 Foreground="Gray"/>
-            <StackPanel Grid.Row="1">
-                <RadioButton x:Name="AllDocumentation" 
+            <StackPanel Grid.Row="1"
+                        Margin="0,5,0,0">
+                <RadioButton x:Name="AllDocumentationRadioButton"                             
                              Content="Документация"
-                             Margin="0,5,0,0"
                              Style="{StaticResource ModernRadioButton}"
                              IsChecked="True" 
                              Click="Documentation_Click"/>
-                <RadioButton x:Name="TechDocumentation"
-                             Content="Техн. документация"
+                <RadioButton x:Name="TechDocumentationRadioButton"
+                             Content="Техническая&#10;документация"
                              Style="{StaticResource ModernRadioButton}"
                              Click="Documentation_Click"/>
-                <RadioButton x:Name="DesDocumentation"
-                             Content="Констр. документация"
+                <RadioButton x:Name="DesDocumentationRadioButton"
+                             Content="Конструкторская&#10;документация"
                              Style="{StaticResource ModernRadioButton}"
                              Click="Documentation_Click"/>
+                <RadioButton x:Name="NotificationRadioButton"
+                             Content="Извещения"
+                             Style="{StaticResource ModernRadioButton}"
+                             Click="Documentation_Click"/>
+                <RadioButton x:Name="EventLogRadioButton"
+                             Content="Журнал событий"
+                             Visibility="Hidden"
+                             Style="{StaticResource ModernRadioButton}"/>
+                <RadioButton x:Name="UsersRadioButton"
+                             Content="Пользователи"
+                             Visibility="Hidden"
+                             Style="{StaticResource ModernRadioButton}"/>
             </StackPanel>
-            <TextBox x:Name="SearchTextBox"
+            <StackPanel Grid.Column="1">
+                <Grid>
+                    <Button x:Name="AddButton"
+                        Grid.Column="1"
+                        Margin="10,40,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Style="{StaticResource ModernExpandButton}"
+                        Width="40"
+                        Height="40"
+                        ToolTip="Добавить" Click="AddButton_Click">
+                        <iconPacks:PackIconMaterial x:Name="AddIcon" Kind="PlusBox"/>
+                    </Button>
+                    <Button x:Name="EditButton"
+                        Grid.Column="1"
+                        Margin="55,40,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Style="{StaticResource ModernExpandButton}"
+                        Width="40"
+                        Height="40"
+                        ToolTip="Редактировать" Click="EditButton_Click">
+                        <iconPacks:PackIconMaterial x:Name="EditIcon" Kind="BookEdit"/>
+                    </Button>
+                    <Button x:Name="DeleteButton"
+                        Grid.Column="1"
+                        Margin="100,40,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Style="{StaticResource ModernExpandButton}"
+                        Width="40"
+                        Height="40"
+                        ToolTip="Удалить" Click="DeleteButton_Click">
+                        <iconPacks:PackIconMaterial x:Name="DeleteIcon" Kind="Delete"/>
+                    </Button>
+                    <Button x:Name="ReportExcelButton"
+                        Grid.Column="1"
+                        Margin="145,40,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Style="{StaticResource ModernExpandButton}"
+                        Width="40"
+                        Height="40"
+                        ToolTip="Отчет Excel">
+                        <iconPacks:PackIconMaterial x:Name="ReportExcelIcon" Kind="MicrosoftExcel"/>
+                    </Button>
+                    <Button x:Name="ReportButton"
+                        Grid.Column="1"
+                        Margin="190,40,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Style="{StaticResource ModernExpandButton}"
+                        Width="40"
+                        Height="40"
+                        ToolTip="Печать">
+                        <iconPacks:PackIconMaterial x:Name="ReportIcon" Kind="File"/>
+                    </Button>
+                    <Button x:Name="TreeOnButton"
+                        Grid.Column="1"
+                        Margin="235,40,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Style="{StaticResource ModernExpandButton}"
+                        Width="40"
+                        Height="40"
+                        ToolTip="Обозреватель" Click="TreeOnButton_Click">
+                        <iconPacks:PackIconMaterial x:Name="TreeOnIcon" Kind="IframeBraces"/>
+                    </Button>
+                    <Button x:Name="AboutProgramButton"
+                        Grid.Column="1"
+                        Margin="280,40,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Style="{StaticResource ModernExpandButton}"
+                        Width="40"
+                        Height="40"
+                        ToolTip="О программе">
+                        <iconPacks:PackIconMaterial x:Name="AboutProgramIcon" Kind="ExclamationThick"/>
+                    </Button>
+                    <Button x:Name="HelpButton"
+                        Grid.Column="1"
+                        Margin="325,40,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Style="{StaticResource ModernExpandButton}"
+                        Width="40"
+                        Height="40"
+                        ToolTip="Справка">
+                        <iconPacks:PackIconMaterial x:Name="HelpIcon" Kind="HelpBox"/>
+                    </Button>
+                    <TextBox x:Name="SearchTextBox"
                      Style="{StaticResource ModernSearchTextBox}"
                      VerticalAlignment="Center"
-                     HorizontalAlignment="Left"
-                     Margin="5"
-                     Grid.Column="1"/>
-            <!--<CheckBox x:Name="CheckMode" 
-                Grid.Column="1"
-                      VerticalAlignment="center"
-                      HorizontalAlignment="center" Checked="CheckBox_Checked"></CheckBox>-->
-
-            <Button x:Name="MinimizeButton"
+                     HorizontalAlignment="Right"
+                     Margin="0,40,110,0">
+                    </TextBox>
+                    <Button x:Name="SearchButton"
+                            Style="{StaticResource ModernExpandButton}"
+                            Width="100"                             
+                            Height="40" 
+                            HorizontalAlignment="Right"
+                            FontSize="20"
+                            FontFamily="Helvetica"
+                            Content="Поиск"
+                            Margin="0,40,5,0"
+                            Click="SearchButton_Click"/>
+                    <Button x:Name="MinimizeButton"
                         Grid.Column="1"
                         Margin="5 ,5 ,75, 5"
                         HorizontalAlignment="Right"
@@ -86,9 +194,9 @@
                         Width="30"
                         Height="30" 
                         Padding="0" Click="MinimizeButton_Click">
-                <iconPacks:PackIconMaterial x:Name="MinimizeIcon" Kind="BorderBottomVariant"/>
-            </Button>
-            <Button x:Name="ExpandButton"
+                        <iconPacks:PackIconMaterial x:Name="MinimizeIcon" Kind="BorderBottomVariant"/>
+                    </Button>
+                    <Button x:Name="ExpandButton"
                         Grid.Column="1"
                         Margin="5 ,5 ,40, 5"
                         HorizontalAlignment="Right"
@@ -97,9 +205,9 @@
                         Width="30"
                         Height="30" 
                         Padding="0" Click="ExpandButton_Click">
-                <iconPacks:PackIconMaterial x:Name="ExpandIcon" Kind="ArrowExpandAll"/>
-            </Button>
-            <Button x:Name="CloseButton"
+                        <iconPacks:PackIconMaterial x:Name="ExpandIcon" Kind="ArrowExpandAll"/>
+                    </Button>
+                    <Button x:Name="CloseButton"
                         Grid.Column="1"
                         Margin="5"
                         HorizontalAlignment="Right"
@@ -108,20 +216,29 @@
                         Width="30"
                         Height="30" 
                         Padding="0" Click="CloseButton_Click">
-                <iconPacks:PackIconMaterial Kind="Power"/>
-            </Button>
-            <Grid Grid.Column="1" Grid.Row="1">
+                        <iconPacks:PackIconMaterial Kind="Power"/>
+                    </Button>
+                </Grid>
+            </StackPanel>
+
+            <!--<CheckBox x:Name="CheckMode" 
+                Grid.Column="1"
+                      VerticalAlignment="center"
+                      HorizontalAlignment="center" Checked="CheckBox_Checked"></CheckBox>-->
+
+
+            <Grid x:Name="GridForDataGrid" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
                 <Syncfusion:SfDataGrid x:Name="DataGrid"
                                        Background="WhiteSmoke"
                                        Foreground="Gray"
-                                       Margin="10" 
+                                       Margin="160,10,10,10" 
                                        ColumnSizer="Star" 
                                        AllowTriStateSorting="True" 
                                        ShowSortNumbers="True" 
                                        ShowGroupDropArea="True" 
                                        AllowFiltering="True" 
                                        SelectionMode="Extended" 
-                                       AllowResizingColumns="True"/>
+                                       AllowResizingColumns="True" Grid.Column="1"/>
             </Grid>
         </Grid>
     </Border>

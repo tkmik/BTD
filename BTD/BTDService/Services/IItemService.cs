@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace BTDService.Services
 {
@@ -12,9 +8,14 @@ namespace BTDService.Services
         Task DisposeAsync();
         T GetById(int id);
         Task<T> GetByIdAsync(int id);
+        void Add(T item);
+        Task AddAsync(T item);
         string Update(T item);
         Task<string> UpdateAsync(T item);
+        string Delete(int id);
         void Load();
         Task LoadAsync();
+        void Save();
+        Task SaveAsync();
     }
 }

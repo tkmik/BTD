@@ -1,62 +1,45 @@
-﻿using System;
-using System.Collections;
+﻿using BTDCore.Models;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace BTDCore.Models
+namespace BTDCore.ViewModels
 {
-    public class Card
+    public class Documentation 
     {
-        [Key]
-        [Required]
-        public int Id { get; set; }
-        [Required]
-        [ConcurrencyCheck]
+        [Display(Name = "Обозначение")]
         public string Designation { get; set; }
-        [Required]
-        [ConcurrencyCheck]
+        [Display(Name = "Наименование")]
         public string Name { get; set; }
-        [Required]
-        [ConcurrencyCheck]
+        [Display(Name = "Дата регистр.")]
         public DateTime DateOfRegistration { get; set; }
-        [Required]
-        [ConcurrencyCheck]
         public int A0 { get; set; }
-        [Required]
-        [ConcurrencyCheck]
         public int A1 { get; set; }
-        [Required]
-        [ConcurrencyCheck]
         public int A2 { get; set; }
-        [Required]
-        [ConcurrencyCheck]
         public int A3 { get; set; }
-        [Required]
-        [ConcurrencyCheck]
         public int A4 { get; set; }
-        [NotMapped]
         private int numberOfSheets;
-        [Required]
-        [ConcurrencyCheck]
+        [Display(Name = "Кол. листов")]
         public int NumberOfSheets
         {
             get { return numberOfSheets; }
             private set { numberOfSheets = A0 + A1 + A2 + A3 + A4; }
         }
-        [Required]
-        [ConcurrencyCheck]
+        [Display(Name = "Тип документа")]
         [ForeignKey("TypeOfDocument")]
         public int TypeId { get; set; }
         public virtual TypeOfDocument TypeOfDocument { get; set; }
-        [Required]
-        [ConcurrencyCheck]
+        [Display(Name = "Дата изм.")]
         public DateTime DateOfChanges { get; set; }
-        [Required]
-        [ConcurrencyCheck]
+        [Display(Name = "Аннулирован?")]
         public bool IsCanceled { get; set; }
-        [Required]
-        [ConcurrencyCheck]
+        [Display(Name = "Временный?")]
         public bool IsTemporary { get; set; }
+        [Display(Name = "Заметка")]
         public string Note { get; set; }
     }
 }

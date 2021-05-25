@@ -19,7 +19,7 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Border CornerRadius="20" Grid.RowSpan="3">
+            <Border CornerRadius="20" Grid.RowSpan="3" BorderThickness="1" BorderBrush="Black">
                 <Border.Background>
                     <LinearGradientBrush>
                         <GradientStop Color="#e0fbfc"  Offset="0.0"/>
@@ -42,6 +42,7 @@
                 <TextBlock Text="BTD"
                            Grid.Row="1"
                            FontSize="28"
+                           FontFamily="Helvetica"
                            FontWeight="DemiBold"
                            VerticalAlignment="Center"
                            Foreground="Gray"
@@ -57,7 +58,8 @@
             
             <StackPanel Grid.Row="2">
                 <StackPanel Orientation="Horizontal">
-                    <TextBox x:Name="UsernameTextBox" FontFamily="Helvetica"
+                    <TextBox x:Name="UsernameTextBox" 
+                         FontFamily="Helvetica"
                          FontWeight="Light"
                          Text="Username"
                          FontSize="20"

@@ -18,16 +18,9 @@ namespace BTDCore
         public DbSet<TechDocumentation> TechDocumentations { get; set; }
         public DbSet<DesDocumentation> DesDocumentations { get; set; }
         public DbSet<ViewUserDetails> ViewUsersDetails { get; set; }
+        public DbSet<SystemEvent> SystemEvents { get; set; }
+        public DbSet<EventLog> EventsLog { get; set; }
 
-        public AppDbContext()
-        {
-            //Database.ExecuteSqlRaw(@"CREATE VIEW View_AllDocumentation AS
-            //                        SELECT ad.Designation, ad.Name, ad.DateOfRegistration, 
-            //                                ad.A0, ad.A1, ad.A2, ad.A3, ad.A4, 
-            //                                ad.NumberOfSheets, ad.DateOfChanges, ad.IsCanceled,
-            //                                ad.IsTemporary, ad.Note
-            //                        FROM Cards ad");
-        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var builder = new ConfigurationBuilder();
@@ -42,7 +35,7 @@ namespace BTDCore
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AllDocumentation>(ad=> 
+            modelBuilder.Entity<AllDocumentation>(ad =>
             {
                 ad.HasNoKey();
                 ad.ToView("View_AllDocumentation");

@@ -12,7 +12,8 @@
                 <ResourceDictionary Source="Styles/ModernExpandButton.xaml"/>
                 <ResourceDictionary Source="Styles/ModernRadioButton.xaml"/>
                 <ResourceDictionary Source="Styles/ModernSearchTextBox.xaml"/>
-                <ResourceDictionary Source="Styles/ModernDataGrid.xaml"/>
+                <ResourceDictionary Source="Styles/ModernTextBox.xaml"/>
+                <ResourceDictionary Source="Styles/ModernTextBlock.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

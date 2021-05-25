@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.CompilerServices;
 
 namespace BTDCore.Models
 {
@@ -25,5 +24,6 @@ namespace BTDCore.Models
         public virtual UserProfile UserDetails { get; set; }
         [Required]
         public virtual UserCapability UserCapabilities { get; set; }
+        public virtual ICollection<EventLog> Events { get; set; }
     }
 }

@@ -1,5 +1,4 @@
-﻿using BTDCore.Models;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace BTDCore.ViewModels

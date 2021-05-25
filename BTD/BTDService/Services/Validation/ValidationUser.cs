@@ -1,9 +1,4 @@
-﻿using BTDCore;
-using BTDService.Services.Crypto;
-using BTDService.Services.db.Users;
-using System.Media;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using BTDService.Services.db.Users;
 
 namespace BTDService.Services.Validation
 {
