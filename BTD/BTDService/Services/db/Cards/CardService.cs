@@ -26,22 +26,22 @@ namespace BTDService.Services.db.Cards
             await _dbContext.DisposeAsync();
         }
 
-        public List<Documentation> GetDocumentationByDesignation(string searchWord)
+        public async Task<List<Documentation>> GetDocumentationByDesignationAsync(string searchWord)
         {
-            return _dbContext.AllDocumentations.Where(card => card.Designation.Contains(searchWord)).ToList<Documentation>();
+            return await _dbContext.AllDocumentations.Where(card => card.Designation.Contains(searchWord)).ToListAsync<Documentation>();
         }
 
-        public List<Documentation> GetDocumentationByName(string searchWord)
+        public async Task<List<Documentation>> GetDocumentationByNameAsync(string searchWord)
         {
-            return _dbContext.AllDocumentations.Where(card => card.Name.Contains(searchWord)).ToList<Documentation>();
+            return await _dbContext.AllDocumentations.Where(card => card.Name.Contains(searchWord)).ToListAsync<Documentation>();
         }
 
-        public List<Documentation> GetAllDocumentation(string searchWord = default)
+        public async Task<List<Documentation>> GetAllDocumentationAsync(string searchWord = default)
         {
             if (searchWord is not null)
             {
-                var documentation = GetDocumentationByName(searchWord)
-                    .Union(GetDocumentationByDesignation(searchWord));
+                var documentation = (await GetDocumentationByNameAsync(searchWord))
+                    .Union(await GetDocumentationByDesignationAsync(searchWord));
                 if (documentation is not null)
                 {
                     return documentation.ToList();
@@ -60,17 +60,17 @@ namespace BTDService.Services.db.Cards
             return await _dbContext.Cards.FirstOrDefaultAsync(card => card.Id == id);
         }
 
-        public List<Card> GetCardByType(int type)
+        public async Task<List<Card>> GetCardByTypeAsync(int type)
         {
-            return _dbContext.Cards.Where(card => card.TypeId == type).ToList();
+            return await _dbContext.Cards.Where(card => card.TypeId == type).ToListAsync();
         }
 
-        public List<Documentation> GetDesDocumentation(string searchWord = default)
+        public async Task<List<Documentation>> GetDesDocumentationAsync(string searchWord = default)
         {
             if (searchWord is not null)
             {
-                var documentation = GetDocumentationByName(searchWord)
-                    .Union(GetDocumentationByDesignation(searchWord))
+                var documentation = (await GetDocumentationByNameAsync(searchWord))
+                    .Union(await GetDocumentationByDesignationAsync(searchWord))
                     .Where(card => card.TypeId == 1);
                 if (documentation is not null)
                 {
@@ -80,12 +80,12 @@ namespace BTDService.Services.db.Cards
             return _dbContext.DesDocumentations.ToList<Documentation>();
         }
 
-        public List<Documentation> GetTechDocumentation(string searchWord = default)
+        public async Task<List<Documentation>> GetTechDocumentationAsync(string searchWord = default)
         {
             if (searchWord is not null)
             {
-                var documentation = GetDocumentationByName(searchWord)
-                    .Union(GetDocumentationByDesignation(searchWord))
+                var documentation = (await GetDocumentationByNameAsync(searchWord))
+                    .Union(await GetDocumentationByDesignationAsync(searchWord))
                     .Where(card => card.TypeId == 2);
                 if (documentation is not null)
                 {
@@ -125,7 +125,6 @@ namespace BTDService.Services.db.Cards
             if (await GetByIdAsync(item.Id) is not null)
             {
                 _dbContext.Entry(item).State = EntityState.Modified;
-                //_dbContext.Users.Update(user);
                 await SaveAsync();
                 return "Card has updated!";
             }
@@ -163,19 +162,19 @@ namespace BTDService.Services.db.Cards
             await _dbContext.SaveChangesAsync();
         }
 
-        public List<string> GetTypesOfDocumentation()
+        public async Task<List<string>> GetTypesOfDocumentationAsync()
         {
-            return _dbContext.TypesOfDocument.Select(item => item.Name).ToList();
+            return await _dbContext.TypesOfDocument.Select(item => item.Name).ToListAsync();
         }
 
-        public string GetTypeOfDocument(int number)
+        public async Task<string> GetTypeOfDocumentAsync(int number)
         {
-            return _dbContext.TypesOfDocument.FirstOrDefault(type => type.Id == number).Name;
+            return (await _dbContext.TypesOfDocument.FirstOrDefaultAsync(type => type.Id == number)).Name;
         }
 
-        public Card GetCardByDesignation(string designation)
+        public async Task<Card> GetCardByDesignationAsync(string designation)
         {
-            return _dbContext.Cards.FirstOrDefault(card => card.Designation == designation);
+            return await _dbContext.Cards.FirstOrDefaultAsync(card => card.Designation == designation);
         }
 
         public string Delete(int id)
@@ -184,7 +183,6 @@ namespace BTDService.Services.db.Cards
             if (item is not null)
             {
                 _dbContext.Entry(item).State = EntityState.Deleted;
-                //_dbContext.Users.Update(user);
                 Save();
                 return "Card was deleted";
             }

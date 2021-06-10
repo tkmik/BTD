@@ -1,4 +1,7 @@
-﻿using System;
+﻿using BTD.Windows;
+using BTDCore.Models;
+using BTDService.Services.db.EventsLogs;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,6 +16,20 @@ namespace BTD
     /// </summary>
     public partial class App : Application
     {
-        internal static void CloseApp() => Application.Current.Shutdown();
+
+        private readonly static IEventsLogService _eventsLogService = new EventsLogService();
+        
+        internal async static void CloseApp() 
+        {
+            await _eventsLogService.AddAsync(new EventLog
+            {
+                
+                UserId = LoginWindow.CurrentUser.Id,
+                TableId = default,
+                SystemEventId = (int)BTDSystemEvents.ExitFromSystem,
+                DateOfEvent = DateTime.Now
+            });
+            Current.Shutdown();
+        }
     }
 }

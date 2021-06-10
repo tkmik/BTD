@@ -1,4 +1,5 @@
 ﻿using BTDService.Services.db.Users;
+using System.Threading.Tasks;
 
 namespace BTDService.Services.Validation
 {
@@ -10,9 +11,9 @@ namespace BTDService.Services.Validation
             _userService = new UserService();
         }
 
-        public ValidationType ValidationUserByPassword(string login, string password)
+        public async Task<ValidationType> ValidationUserByPasswordAsync(string login, string password)
         {
-            var user = _userService.GetUserByLogin(login);
+            var user = await _userService.GetUserByLoginAsync(login);
             if (user is not null)
             {
                 if (user.Password == password)

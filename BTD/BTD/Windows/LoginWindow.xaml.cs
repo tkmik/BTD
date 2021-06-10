@@ -1,9 +1,12 @@
-﻿using BTDService.Services.Crypto;
+﻿using BTDCore.Models;
+using BTDService.Services.Crypto;
 using BTDService.Services.Validation;
+using BTDService.Services.db.EventsLogs;
 using System;
 using System.Media;
 using System.Windows;
 using System.Windows.Input;
+using BTDService.Services.db.Users;
 
 namespace BTD.Windows
 {
@@ -12,12 +15,15 @@ namespace BTD.Windows
     /// </summary>
     public partial class LoginWindow : Window
     {
+        internal static User CurrentUser;
 
-        //private readonly IUserService _userService;
+        private readonly IUserService _userService;
+        private readonly IEventsLogService _eventsLogService;
         public LoginWindow()
         {
             InitializeComponent();
-            //_userService = new UserService();
+            _userService = new UserService();
+            _eventsLogService = new EventsLogService();
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -60,17 +66,25 @@ namespace BTD.Windows
             }
         }
 
-        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             ICrypto crypt = new CryptoService();
             ValidationUser validation = new ValidationUser();
-            switch (validation.ValidationUserByPassword(
+            switch (await validation.ValidationUserByPasswordAsync(
                 UsernameTextBox.Text,
                 crypt.Encrypt(UsernamePasswordBox.Password)))
             {
                 case ValidationType.Login:
                     MenuWindow menuWindow = new MenuWindow();
                     menuWindow.Show();
+                    CurrentUser = await _userService.GetUserByLoginAsync(UsernameTextBox.Text);
+                    await _eventsLogService.AddAsync(new EventLog 
+                    {
+                        UserId = CurrentUser.Id,
+                        TableId = default,
+                        SystemEventId = (int)BTDSystemEvents.EnterIntoSystem,
+                        DateOfEvent = DateTime.Now
+                    });
                     Close();
                     //MessageBox.Show("Login");
                     break;
@@ -78,14 +92,14 @@ namespace BTD.Windows
                 case ValidationType.PasswordError:
                 default:
                     SystemSounds.Hand.Play();
-                    MessageBox.Show("Login or password has been wrong!");
+                    MessageBox.Show("Логин или пароль неверный!");
                     break;
             }
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            App.CloseApp();
+            Close();
         }
     }
 }

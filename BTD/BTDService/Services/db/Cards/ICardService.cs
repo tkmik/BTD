@@ -7,14 +7,14 @@ namespace BTDService.Services.db.Cards
 {
     public interface ICardService : IItemService<Card>
     {
-        List<Card> GetCardByType(int type);
-        List<Documentation> GetAllDocumentation(string searchWord = default);
-        List<Documentation> GetTechDocumentation(string searchWord = default);
-        List<Documentation> GetDesDocumentation(string searchWord = default);
-        List<Documentation> GetDocumentationByDesignation(string searchWord);
-        List<Documentation> GetDocumentationByName(string searchWord);
-        List<string> GetTypesOfDocumentation();
-        string GetTypeOfDocument(int number);
-        Card GetCardByDesignation(string designation);
+        Task<List<Card>> GetCardByTypeAsync(int type);
+        Task<List<Documentation>> GetAllDocumentationAsync(string searchWord = default);
+        Task<List<Documentation>> GetTechDocumentationAsync(string searchWord = default);
+        Task<List<Documentation>> GetDesDocumentationAsync(string searchWord = default);
+        Task<List<Documentation>> GetDocumentationByDesignationAsync(string searchWord);
+        Task<List<Documentation>> GetDocumentationByNameAsync(string searchWord);
+        Task<List<string>> GetTypesOfDocumentationAsync();
+        Task<string> GetTypeOfDocumentAsync(int number);
+        Task<Card> GetCardByDesignationAsync(string designation);
     }
 }

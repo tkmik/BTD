@@ -1,10 +1,7 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace BTDCore.ViewModels
+﻿namespace BTDCore.ViewModels
 {
     public class DesDocumentation : Documentation
     {
-       
+
     }
 }

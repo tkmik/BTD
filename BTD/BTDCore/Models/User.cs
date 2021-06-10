@@ -19,11 +19,11 @@ namespace BTDCore.Models
         [Required]
         [ForeignKey("Role")]
         public int RoleId { get; set; }
-        public virtual Role Role { get; set; }
+        public Role Role { get; set; }
         [Required]
-        public virtual UserProfile UserDetails { get; set; }
+        public UserProfile UserDetails { get; set; }
         [Required]
-        public virtual UserCapability UserCapabilities { get; set; }
-        public virtual ICollection<EventLog> Events { get; set; }
+        public UserCapability UserCapabilities { get; set; }
+        public ICollection<EventLog> Events { get; set; }
     }
 }

@@ -1,7 +1,9 @@
-﻿namespace BTDService.Services.Validation
+﻿using System.Threading.Tasks;
+
+namespace BTDService.Services.Validation
 {
     public interface IValidation
     {
-        ValidationType ValidationUserByPassword(string login, string password);
+        Task<ValidationType> ValidationUserByPasswordAsync(string login, string password);
     }
 }

@@ -47,7 +47,7 @@ namespace BTDCore.Models
         [ConcurrencyCheck]
         [ForeignKey("TypeOfDocument")]
         public int TypeId { get; set; }
-        public virtual TypeOfDocument TypeOfDocument { get; set; }
+        public TypeOfDocument TypeOfDocument { get; set; }
         [Required]
         [ConcurrencyCheck]
         public DateTime DateOfChanges { get; set; }

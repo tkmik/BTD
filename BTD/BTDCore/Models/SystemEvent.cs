@@ -3,6 +3,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BTDCore.Models
 {
+    public enum BTDSystemEvents
+    {
+        EnterIntoSystem = 1,
+        ExitFromSystem,
+        Adding,
+        Editing,
+        Deleting,
+        MakingReport
+    }
+
     public class SystemEvent
     {
         [Key]
@@ -10,6 +20,6 @@ namespace BTDCore.Models
         [Required]
         [Display(Name = "Событие")]
         public string Name { get; set; }
-        public virtual ICollection<EventLog> EventsLog { get; set; }
+        public ICollection<EventLog> EventsLog { get; set; }
     }
 }

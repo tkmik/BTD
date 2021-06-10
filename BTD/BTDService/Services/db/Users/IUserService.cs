@@ -7,10 +7,9 @@ namespace BTDService.Services.db.Users
 {
     public interface IUserService : IItemService<User>
     {
-        User GetUserByLogin(string login);
-        List<User> GetAll();
         Task<List<User>> GetAllAsync();
-        List<ViewUserDetails> GetAllUsersDetails();
+        Task<List<ViewUserDetails>> GetAllUsersDetailsAsync(string search = default);
+        User GetUserByLogin(string login);
         Task<User> GetUserByLoginAsync(string login);
     }
 }

@@ -23,6 +23,9 @@ namespace BTDCore.Models
         [Required]
         public string SerialNumber { get; set; }
         [Required]
-        public virtual User User { get; set; }
+        public User User { get; set; }
+        [Required]
+        [ConcurrencyCheck]
+        public bool IsDeleted { get; set; }
     }
 }

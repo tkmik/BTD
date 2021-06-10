@@ -19,17 +19,27 @@ namespace BTDService.Services.db.Users
 
         public void Add(User item)
         {
-            throw new System.NotImplementedException();
+            _dbContext.Users.Add(item);
         }
 
-        public Task AddAsync(User item)
+        public async Task AddAsync(User item)
         {
-            throw new System.NotImplementedException();
+            await _dbContext.Users.AddAsync(item);
         }
 
         public string Delete(int id)
         {
-            throw new System.NotImplementedException();
+            var item = GetById(id);
+            if (item is not null)
+            {
+                _dbContext.Entry(item).State = EntityState.Deleted;
+                Save();
+                return "Card was deleted";
+            }
+            else
+            {
+                return "Card was not deleted";
+            }
         }
 
         public void Dispose()
@@ -42,19 +52,23 @@ namespace BTDService.Services.db.Users
             await _dbContext.DisposeAsync();
         }
 
-        public List<User> GetAll()
-        {
-            return _dbContext.Users.ToList();
-        }
-
         public async Task<List<User>> GetAllAsync()
         {
             return await _dbContext.Users.ToListAsync();
         }
 
-        public List<ViewUserDetails> GetAllUsersDetails()
+        public async Task<List<ViewUserDetails>> GetAllUsersDetailsAsync(string search = default)
         {
-            return _dbContext.ViewUsersDetails.ToList();
+            if (search is not null)
+            {
+                return await _dbContext.ViewUsersDetails.Where(
+                    user => user.IsDeleted == false 
+                    && (user.Login.Contains(search) 
+                    || user.FirstName.Contains(search)
+                    || user.LastName.Contains(search))).ToListAsync();
+            }
+            return await _dbContext.ViewUsersDetails.Where(user => user.IsDeleted == false).ToListAsync();
+
         }
 
         public User GetById(int id)
@@ -69,12 +83,18 @@ namespace BTDService.Services.db.Users
 
         public User GetUserByLogin(string login)
         {
-            return _dbContext.Users.FirstOrDefault(u => u.Login == login);
+            return _dbContext.Users
+                 .Include(table => table.UserDetails)
+                 .Include(table => table.UserCapabilities)
+                 .FirstOrDefault(u => u.Login == login);
         }
 
         public async Task<User> GetUserByLoginAsync(string login)
         {
-            return await _dbContext.Users.FirstOrDefaultAsync(u => u.Login == login);
+            return await _dbContext.Users
+                .Include(table=>table.UserDetails)
+                .Include(table => table.UserCapabilities)
+                .FirstOrDefaultAsync(u => u.Login == login);
         }
 
         public void Load()

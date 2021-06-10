@@ -15,7 +15,7 @@ namespace BTDCore.Models
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        public virtual ICollection<Card> Cards { get; set; }
+        public ICollection<Card> Cards { get; set; }
         public TypeOfDocument()
         {
             Cards = new List<Card>();

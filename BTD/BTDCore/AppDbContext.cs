@@ -20,6 +20,10 @@ namespace BTDCore
         public DbSet<ViewUserDetails> ViewUsersDetails { get; set; }
         public DbSet<SystemEvent> SystemEvents { get; set; }
         public DbSet<EventLog> EventsLog { get; set; }
+        public DbSet<Notice> Notices { get; set; }
+        public DbSet<ViewNotice> ViewNotices { get; set; }
+        public DbSet<Table> Tables { get; set; }
+        public DbSet<ViewEventLog> ViewEventsLog { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -29,8 +33,7 @@ namespace BTDCore
             var config = builder.Build();
 
             var connectionString = config.GetConnectionString("Default");
-            optionsBuilder.UseLazyLoadingProxies()
-                .UseSqlServer(connectionString);
+            optionsBuilder.UseSqlServer(connectionString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -54,6 +57,16 @@ namespace BTDCore
             {
                 vu.HasNoKey();
                 vu.ToView("View_UserDetails");
+            });
+            modelBuilder.Entity<ViewNotice>(vu =>
+            {
+                vu.HasNoKey();
+                vu.ToView("View_Notice");
+            });
+            modelBuilder.Entity<ViewEventLog>(vu =>
+            {
+                vu.HasNoKey();
+                vu.ToView("View_EventLog");
             });
 
             //    modelBuilder

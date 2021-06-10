@@ -11,9 +11,6 @@ namespace BTDCore.Models
         public int Id { get; set; }
         [Required]
         [ConcurrencyCheck]
-        public bool IsEntered { get; set; }
-        [Required]
-        [ConcurrencyCheck]
         public bool CanAddInfo { get; set; }
         [Required]
         [ConcurrencyCheck]
@@ -24,10 +21,7 @@ namespace BTDCore.Models
         [Required]
         [ConcurrencyCheck]
         public bool CanMakeReport { get; set; }
-        public string IpAddress { get; set; }
-        [Required]
-        [ConcurrencyCheck]
-        public bool IsDeleted { get; set; }
+        public string IpAddress { get; set; }        
         [Required]
         [ConcurrencyCheck]
         public bool CanMakeNewUser { get; set; }
@@ -39,6 +33,6 @@ namespace BTDCore.Models
         public bool CanDeleteUser { get; set; }
         [Required]
         [ConcurrencyCheck]
-        public virtual User User { get; set; }
+        public User User { get; set; }
     }
 }

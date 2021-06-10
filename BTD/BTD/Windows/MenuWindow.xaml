@@ -70,14 +70,14 @@
                              Content="Извещения"
                              Style="{StaticResource ModernRadioButton}"
                              Click="Documentation_Click"/>
-                <RadioButton x:Name="EventLogRadioButton"
-                             Content="Журнал событий"
-                             Visibility="Hidden"
-                             Style="{StaticResource ModernRadioButton}"/>
                 <RadioButton x:Name="UsersRadioButton"
                              Content="Пользователи"
-                             Visibility="Hidden"
-                             Style="{StaticResource ModernRadioButton}"/>
+                             Style="{StaticResource ModernRadioButton}"
+                             Click="Documentation_Click"/>
+                <RadioButton x:Name="EventLogRadioButton"
+                             Content="Журнал событий"
+                             Style="{StaticResource ModernRadioButton}"
+                             Click="Documentation_Click"/>               
             </StackPanel>
             <StackPanel Grid.Column="1">
                 <Grid>
@@ -114,7 +114,7 @@
                         ToolTip="Удалить" Click="DeleteButton_Click">
                         <iconPacks:PackIconMaterial x:Name="DeleteIcon" Kind="Delete"/>
                     </Button>
-                    <Button x:Name="ReportExcelButton"
+                    <Button x:Name="RefreshButton"
                         Grid.Column="1"
                         Margin="145,40,0,0"
                         HorizontalAlignment="Left"
@@ -122,10 +122,10 @@
                         Style="{StaticResource ModernExpandButton}"
                         Width="40"
                         Height="40"
-                        ToolTip="Отчет Excel">
-                        <iconPacks:PackIconMaterial x:Name="ReportExcelIcon" Kind="MicrosoftExcel"/>
+                        ToolTip="Обновить" Click="RefreshButton_Click">
+                        <iconPacks:PackIconMaterial x:Name="RefreshExcelIcon" Kind="RefreshCircle"/>
                     </Button>
-                    <Button x:Name="ReportButton"
+                    <Button x:Name="ReportExcelButton"
                         Grid.Column="1"
                         Margin="190,40,0,0"
                         HorizontalAlignment="Left"
@@ -133,10 +133,10 @@
                         Style="{StaticResource ModernExpandButton}"
                         Width="40"
                         Height="40"
-                        ToolTip="Печать">
-                        <iconPacks:PackIconMaterial x:Name="ReportIcon" Kind="File"/>
+                        ToolTip="Отчет Excel" Click="ReportExcelButton_Click">
+                        <iconPacks:PackIconMaterial x:Name="ReportExcelIcon" Kind="MicrosoftExcel"/>
                     </Button>
-                    <Button x:Name="TreeOnButton"
+                    <Button x:Name="ReportPdfButton"
                         Grid.Column="1"
                         Margin="235,40,0,0"
                         HorizontalAlignment="Left"
@@ -144,10 +144,10 @@
                         Style="{StaticResource ModernExpandButton}"
                         Width="40"
                         Height="40"
-                        ToolTip="Обозреватель" Click="TreeOnButton_Click">
-                        <iconPacks:PackIconMaterial x:Name="TreeOnIcon" Kind="IframeBraces"/>
+                        ToolTip="Отчет PDF" Click="ReportPdfButton_Click">
+                        <iconPacks:PackIconMaterial x:Name="ReportPdfIcon" Kind="PdfBox"/>
                     </Button>
-                    <Button x:Name="AboutProgramButton"
+                    <Button x:Name="ReportButton"
                         Grid.Column="1"
                         Margin="280,40,0,0"
                         HorizontalAlignment="Left"
@@ -155,10 +155,10 @@
                         Style="{StaticResource ModernExpandButton}"
                         Width="40"
                         Height="40"
-                        ToolTip="О программе">
-                        <iconPacks:PackIconMaterial x:Name="AboutProgramIcon" Kind="ExclamationThick"/>
+                        ToolTip="Печать" Click="ReportButton_Click">
+                        <iconPacks:PackIconMaterial x:Name="ReportIcon" Kind="File"/>
                     </Button>
-                    <Button x:Name="HelpButton"
+                    <Button x:Name="TreeOnButton"
                         Grid.Column="1"
                         Margin="325,40,0,0"
                         HorizontalAlignment="Left"
@@ -166,9 +166,10 @@
                         Style="{StaticResource ModernExpandButton}"
                         Width="40"
                         Height="40"
-                        ToolTip="Справка">
-                        <iconPacks:PackIconMaterial x:Name="HelpIcon" Kind="HelpBox"/>
-                    </Button>
+                        ToolTip="Обозреватель" Click="TreeOnButton_Click">
+                        <iconPacks:PackIconMaterial x:Name="TreeOnIcon" Kind="IframeBraces"/>
+                    </Button>                   
+                    
                     <TextBox x:Name="SearchTextBox"
                      Style="{StaticResource ModernSearchTextBox}"
                      VerticalAlignment="Center"
@@ -185,6 +186,28 @@
                             Content="Поиск"
                             Margin="0,40,5,0"
                             Click="SearchButton_Click"/>
+                    <Button x:Name="AboutProgramButton"
+                        Grid.Column="1"
+                        Margin="5,5,145,5"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Style="{StaticResource ModernExpandButton}"
+                        Width="30"
+                        Height="30"
+                        ToolTip="О программе">
+                        <iconPacks:PackIconMaterial x:Name="AboutProgramIcon" Kind="ExclamationThick"/>
+                    </Button>
+                    <Button x:Name="HelpButton"
+                        Grid.Column="1"
+                        Margin="5,5,110,5"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Style="{StaticResource ModernExpandButton}"
+                        Width="30"
+                        Height="30"
+                        ToolTip="Справка">
+                        <iconPacks:PackIconMaterial x:Name="HelpIcon" Kind="HelpBox"/>
+                    </Button>
                     <Button x:Name="MinimizeButton"
                         Grid.Column="1"
                         Margin="5 ,5 ,75, 5"
@@ -238,7 +261,7 @@
                                        ShowGroupDropArea="True" 
                                        AllowFiltering="True" 
                                        SelectionMode="Extended" 
-                                       AllowResizingColumns="True" Grid.Column="1"/>
+                                       AllowResizingColumns="True" Grid.Column="1" MouseDoubleClick="DataGrid_MouseDoubleClick"/>
             </Grid>
         </Grid>
     </Border>

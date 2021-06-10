@@ -17,5 +17,7 @@ namespace BTDCore.ViewModels
         public DateTime DateOfBirth { get; set; }
         [Display(Name = "Серийный номер")]
         public string SerialNumber { get; set; }
+        [Display(Name = "Удален?")]
+        public bool IsDeleted { get; set; }
     }
 }
