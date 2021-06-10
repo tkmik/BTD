@@ -34,6 +34,7 @@ namespace BTD.Windows
         private readonly ITableService _tableService;
 
         private bool DataGridAllSize = false;
+        private bool DataGridExpand = false;
         public MenuWindow()
         {
             InitializeComponent();
@@ -105,6 +106,10 @@ namespace BTD.Windows
             {
                 DataGrid.ItemsSource = await _userService.GetAllUsersDetailsAsync();
             }
+            if ((bool)EventLogRadioButton.IsChecked)
+            {
+                DataGrid.ItemsSource = await _eventLogService.GetViewEventLogAsync();
+            }
         }
         //look for information from table
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
@@ -129,18 +134,24 @@ namespace BTD.Windows
             {
                 DataGrid.ItemsSource = await _userService.GetAllUsersDetailsAsync(SearchTextBox.Text);
             }
+            if ((bool)EventLogRadioButton.IsChecked)
+            {
+                DataGrid.ItemsSource = await _eventLogService.GetViewEventLogAsync(SearchTextBox.Text);
+            }
         }
         //show/hide left bar
         private void TreeOnButton_Click(object sender, RoutedEventArgs e)
         {
             if (!DataGridAllSize)
             {
+                TreeOnButton.Style = (Style)TreeOnButton.FindResource("ModernExpandButtonPressed");
                 DataGrid.Margin = new Thickness(10);
                 DataGridAllSize = true;
             }
             else
             {
                 DataGrid.Margin = new Thickness(160, 10, 10, 10);
+                TreeOnButton.Style = (Style)TreeOnButton.FindResource("ModernExpandButton");
                 DataGridAllSize = false;
             }
         }
@@ -460,6 +471,37 @@ namespace BTD.Windows
                     }
                 }
             }
+        }
+
+        private void ExpandTableButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!DataGridExpand)
+            {
+                DataGrid.ColumnSizer = GridLengthUnitType.AutoWithLastColumnFill;
+                ExpandTableButton.Style = (Style)ExpandTableButton.FindResource("ModernExpandButtonPressed");
+                DataGridExpand = true;
+            }
+            else
+            {
+                DataGrid.ColumnSizer = GridLengthUnitType.Star;
+                ExpandTableButton.Style = (Style)ExpandTableButton.FindResource("ModernExpandButton");
+                DataGridExpand = false;
+            }
+        }
+
+        private async void AboutProgramButton_Click(object sender, RoutedEventArgs e)
+        {
+            LoginWindow loginWindow = new LoginWindow();
+            loginWindow.Show();
+            Close();
+            await _eventLogService.AddAsync(new BTDCore.Models.EventLog
+            {
+                UserId = LoginWindow.CurrentUser.Id,
+                TableId = default,
+                SystemEventId = (int)BTDSystemEvents.ExitFromSystem,
+                DateOfEvent = DateTime.Now
+            });
+
         }
 
         //private void CheckBox_Checked(object sender, RoutedEventArgs e)

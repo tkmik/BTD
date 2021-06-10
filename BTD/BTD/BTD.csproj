@@ -34,6 +34,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Styles\ModernExpandButtonPressed.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Styles\ModernRoundButton.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>

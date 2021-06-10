@@ -58,9 +58,16 @@ namespace BTDService.Services.db.EventsLogs
         {
             if (searchWord is not null)
             {
-                return await _dbContext.ViewEventsLog.Where(search => search.Event.Name.Contains(searchWord)).ToListAsync();
+                return await _dbContext.ViewEventsLog
+                    .Include(t=>t.User)
+                    .Include(t=>t.Event)
+                    .Include(t=>t.NameCard)
+                    .Where(search => search.Event.Name.Contains(searchWord)).ToListAsync();
             }
-            return await _dbContext.ViewEventsLog.ToListAsync();
+            return await _dbContext.ViewEventsLog
+                    .Include(t => t.User)
+                    .Include(t => t.Event)
+                    .Include(t => t.NameCard).ToListAsync();
         }
 
         public void Load()

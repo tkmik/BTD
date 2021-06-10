@@ -23,6 +23,8 @@ namespace BTD.Windows
         {
             _roleService = new RoleService();
             _userService = new UserService();
+            _eventLogService = new EventsLogService();
+            _tableService = new TableService();
             InitializeComponent();
             if (user is not null)
             {

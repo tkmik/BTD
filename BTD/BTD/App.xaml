@@ -14,6 +14,7 @@
                 <ResourceDictionary Source="Styles/ModernSearchTextBox.xaml"/>
                 <ResourceDictionary Source="Styles/ModernTextBox.xaml"/>
                 <ResourceDictionary Source="Styles/ModernTextBlock.xaml"/>
+                <ResourceDictionary Source="Styles/ModernExpandButtonPressed.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -168,8 +168,19 @@
                         Height="40"
                         ToolTip="Обозреватель" Click="TreeOnButton_Click">
                         <iconPacks:PackIconMaterial x:Name="TreeOnIcon" Kind="IframeBraces"/>
-                    </Button>                   
-                    
+                    </Button>
+                    <Button x:Name="ExpandTableButton"
+                        Grid.Column="1"
+                        Margin="370,40,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Style="{StaticResource ModernExpandButton}"
+                        Width="40"
+                        Height="40"
+                        ToolTip="Растянуть таблицу" Click="ExpandTableButton_Click">
+                        <iconPacks:PackIconMaterial x:Name="ExpandTableIcon" Kind="ArrowLeftRightBold"/>
+                    </Button>
+
                     <TextBox x:Name="SearchTextBox"
                      Style="{StaticResource ModernSearchTextBox}"
                      VerticalAlignment="Center"
@@ -194,8 +205,8 @@
                         Style="{StaticResource ModernExpandButton}"
                         Width="30"
                         Height="30"
-                        ToolTip="О программе">
-                        <iconPacks:PackIconMaterial x:Name="AboutProgramIcon" Kind="ExclamationThick"/>
+                        ToolTip="Выйти из системы" Click="AboutProgramButton_Click">
+                        <iconPacks:PackIconMaterial x:Name="AboutProgramIcon" Kind="AccountArrowRight"/>
                     </Button>
                     <Button x:Name="HelpButton"
                         Grid.Column="1"
