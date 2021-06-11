@@ -16,6 +16,7 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Media;
 using System.Windows;
 using System.Windows.Input;
@@ -158,7 +159,6 @@ namespace BTD.Windows
         //add some information about documentation and etc
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            
             if ((bool)AllDocumentationRadioButton.IsChecked
                 || (bool)TechDocumentationRadioButton.IsChecked
                 || (bool)DesDocumentationRadioButton.IsChecked)
@@ -181,16 +181,24 @@ namespace BTD.Windows
                 window.Show();
                 window.Topmost = true;
             }
-            if (LoginWindow.CurrentUser.UserCapabilities.CanAddInfo)
+            if ((bool)UsersRadioButton.IsChecked)
             {
-                AddUpdateUserWindow window = new AddUpdateUserWindow();
-                window.Show();
-                window.Topmost = true;
+                if (LoginWindow.CurrentUser.UserCapabilities.CanAddInfo)
+                {
+                    AddUpdateUserWindow window = new AddUpdateUserWindow();
+                    window.Show();
+                    window.Topmost = true;
+                }
+                else
+                {
+                    SystemSounds.Hand.Play();
+                    MessageBox.Show("Вы не можете добавлять пользователей!");
+                }
             }
-            else
+            if ((bool)EventLogRadioButton.IsChecked)
             {
                 SystemSounds.Hand.Play();
-                MessageBox.Show("Вы не можете добавлять пользователей!");
+                MessageBox.Show("Вы не можете добавлять событие!");
             }
 
         }
@@ -239,8 +247,15 @@ namespace BTD.Windows
                         SystemSounds.Hand.Play();
                         MessageBox.Show("Вы не можете редактировать пользователей!");
                         return;
-                    }                   
+                    }
                 }
+                
+            } 
+            else if ((bool)EventLogRadioButton.IsChecked)
+            {
+                SystemSounds.Hand.Play();
+                MessageBox.Show("Вы не можете добавлять событие!");
+                return;
             }
             else
             {
@@ -303,9 +318,14 @@ namespace BTD.Windows
                         DateOfEvent = DateTime.Now
                     });
                 }
-               
                 SystemSounds.Hand.Play();
                 MessageBox.Show("Запись успешно удалена!");
+                return;
+            }
+            else if ((bool)EventLogRadioButton.IsChecked)
+            {
+                SystemSounds.Hand.Play();
+                MessageBox.Show("Вы не можете добавлять событие!");
                 return;
             }
             SystemSounds.Hand.Play();
@@ -317,7 +337,7 @@ namespace BTD.Windows
         {
             var saveDlg = new SaveFileDialog();
             if (LoginWindow.CurrentUser.UserCapabilities.CanMakeReport)
-            {                
+            {
                 saveDlg.Filter = "Excel documents|*.xlsx";
                 if (!saveDlg.ShowDialog().GetValueOrDefault())
                     return;
@@ -358,6 +378,17 @@ namespace BTD.Windows
                     DateOfEvent = DateTime.Now
                 });
             }
+            if ((bool)UsersRadioButton.IsChecked)
+            {
+                await _eventLogService.AddAsync(new BTDCore.Models.EventLog
+                {
+                    UserId = LoginWindow.CurrentUser.Id,
+                    TableId = await _tableService.GetTableByIdAsync((int)TableName.Users),
+                    SystemEventId = (int)BTDSystemEvents.MakingReport,
+                    DateOfEvent = DateTime.Now
+                });
+            }
+
             if (MessageBox.Show("Открыть файл " + saveDlg.SafeFileName + " ? ", saveDlg.SafeFileName, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 using var p = new Process();
@@ -380,7 +411,7 @@ namespace BTD.Windows
             else
             {
                 SystemSounds.Hand.Play();
-                MessageBox.Show("Вы не можете созадвать отчет по документации, обратитесь к администратору!");                
+                MessageBox.Show("Вы не можете созадвать отчет по документации, обратитесь к администратору!");
             }
         }
         //Print Datagrid to PDF and try to open after
@@ -436,6 +467,16 @@ namespace BTD.Windows
                     DateOfEvent = DateTime.Now
                 });
             }
+            if ((bool)UsersRadioButton.IsChecked)
+            {
+                await _eventLogService.AddAsync(new BTDCore.Models.EventLog
+                {
+                    UserId = LoginWindow.CurrentUser.Id,
+                    TableId = await _tableService.GetTableByIdAsync((int)TableName.Users),
+                    SystemEventId = (int)BTDSystemEvents.MakingReport,
+                    DateOfEvent = DateTime.Now
+                });
+            }
             if (MessageBox.Show("Открыть файл " + saveDlg.SafeFileName + " ? ", saveDlg.SafeFileName, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 using var p = new Process();
@@ -449,7 +490,7 @@ namespace BTD.Windows
         {
             Documentation_Click(sender, e);
         }
-        
+
         private async void DataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if ((bool)NotificationRadioButton.IsChecked)
@@ -489,7 +530,7 @@ namespace BTD.Windows
             }
         }
 
-        private async void AboutProgramButton_Click(object sender, RoutedEventArgs e)
+        private async void LeaveButton_Click(object sender, RoutedEventArgs e)
         {
             LoginWindow loginWindow = new LoginWindow();
             loginWindow.Show();
@@ -504,20 +545,21 @@ namespace BTD.Windows
 
         }
 
-        //private void CheckBox_Checked(object sender, RoutedEventArgs e)
-        //{
-        //    if (CheckMode.IsChecked.HasValue == true)
-        //    {
-        //        FirstColorLine.Color = (Color)ColorConverter.ConvertFromString("#2c3d55");
-        //        SecondColorLine.Color = (Color)ColorConverter.ConvertFromString("#536271");
-
-        //       // SearchTextBox.Text = Resources["Light"].ToString();
-        //    }
-        //    else
-        //    {
-        //        FirstColorLine.Color = (Color)ColorConverter.ConvertFromString("#e0fbfc");
-        //        SecondColorLine.Color = (Color)ColorConverter.ConvertFromString("#98c1d9");
-        //    }
-        //}
+        private void HelpButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                
+                using var process = new Process();
+                process.StartInfo.UseShellExecute = true;
+                process.StartInfo.FileName = Directory.GetCurrentDirectory() + @"/helpBTD.chm";
+                process.Start();
+            }
+            catch (Win32Exception)
+            {
+                SystemSounds.Hand.Play();
+                MessageBox.Show("Проверьте целостность файла!");
+            }
+        }
     }
 }

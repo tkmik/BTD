@@ -197,7 +197,7 @@
                             Content="Поиск"
                             Margin="0,40,5,0"
                             Click="SearchButton_Click"/>
-                    <Button x:Name="AboutProgramButton"
+                    <Button x:Name="LeaveButton"
                         Grid.Column="1"
                         Margin="5,5,145,5"
                         HorizontalAlignment="Right"
@@ -205,8 +205,8 @@
                         Style="{StaticResource ModernExpandButton}"
                         Width="30"
                         Height="30"
-                        ToolTip="Выйти из системы" Click="AboutProgramButton_Click">
-                        <iconPacks:PackIconMaterial x:Name="AboutProgramIcon" Kind="AccountArrowRight"/>
+                        ToolTip="Выйти из системы" Click="LeaveButton_Click">
+                        <iconPacks:PackIconMaterial x:Name="LeaveIcon" Kind="AccountArrowRight"/>
                     </Button>
                     <Button x:Name="HelpButton"
                         Grid.Column="1"
@@ -216,7 +216,7 @@
                         Style="{StaticResource ModernExpandButton}"
                         Width="30"
                         Height="30"
-                        ToolTip="Справка">
+                        ToolTip="Справка" Click="HelpButton_Click">
                         <iconPacks:PackIconMaterial x:Name="HelpIcon" Kind="HelpBox"/>
                     </Button>
                     <Button x:Name="MinimizeButton"

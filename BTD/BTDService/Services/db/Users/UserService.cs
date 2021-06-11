@@ -84,27 +84,31 @@ namespace BTDService.Services.db.Users
         public User GetUserByLogin(string login)
         {
             return _dbContext.Users
+                 .Include(table=>table.UserCapabilities)
                  .Include(table => table.UserDetails)
-                 .Include(table => table.UserCapabilities)
                  .FirstOrDefault(u => u.Login == login);
         }
 
         public async Task<User> GetUserByLoginAsync(string login)
         {
             return await _dbContext.Users
-                .Include(table=>table.UserDetails)
                 .Include(table => table.UserCapabilities)
+                .Include(table=>table.UserDetails)
                 .FirstOrDefaultAsync(u => u.Login == login);
         }
 
         public void Load()
         {
             _dbContext.Users.Load();
+            _dbContext.UserProfiles.Load();
+            _dbContext.UserCapabilities.Load();
         }
 
         public async Task LoadAsync()
         {
             await _dbContext.Users.LoadAsync();
+            await _dbContext.UserProfiles.LoadAsync();
+            await _dbContext.UserCapabilities.LoadAsync();
         }
 
         public void Save()

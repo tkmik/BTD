@@ -5,6 +5,7 @@ using BTDService.Services.db.Role;
 using BTDService.Services.db.Tables;
 using BTDService.Services.db.Users;
 using System;
+using System.Media;
 using System.Windows;
 using System.Windows.Input;
 
@@ -45,13 +46,13 @@ namespace BTD.Windows
             }
             SaveButton.Click += async (sender, e) =>
             {
-                if (LoginTextBox.Text.Equals("")
-                && PasswordTextBox.Password.Equals("")
-                &&FirstNameTextBox.Text.Equals("")
-                &&LastNameTextBox.Text.Equals("")
-                &&DateOfBirthDatePicker.Text.Equals("")
-                &&SerialNumberTextBox.Text.Equals("")
-                &&RoleComboBox.SelectedItem is not null)
+                if (!LoginTextBox.Text.Equals("")
+                && !PasswordTextBox.Password.Equals("")
+                &&!FirstNameTextBox.Text.Equals("")
+                &&!LastNameTextBox.Text.Equals("")
+                &&!DateOfBirthDatePicker.Text.Equals("")
+                &&!SerialNumberTextBox.Text.Equals("")
+                &&!(RoleComboBox.SelectedItem is not null))
                 {
                     if (user is not null)
                     {
@@ -105,6 +106,14 @@ namespace BTD.Windows
                             DateOfEvent = DateTime.Now
                         });
                     }
+                    SystemSounds.Hand.Play();
+                    MessageBox.Show("Данные были сохранены!");
+                    Close();
+                }
+                else
+                {
+                    SystemSounds.Hand.Play();
+                    MessageBox.Show("Данные введены некорректно!");
                 }
             };
 
