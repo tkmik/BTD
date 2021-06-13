@@ -183,7 +183,7 @@ namespace BTD.Windows
             }
             if ((bool)UsersRadioButton.IsChecked)
             {
-                if (LoginWindow.CurrentUser.UserCapabilities.CanAddInfo)
+                if (LoginWindow.CurrentUser.UserCapabilities.CanMakeNewUser)
                 {
                     AddUpdateUserWindow window = new AddUpdateUserWindow();
                     window.Show();
@@ -290,24 +290,27 @@ namespace BTD.Windows
                         return;
                     }
                 }
-                if ((bool)UsersRadioButton.IsChecked)
+                else if ((bool)UsersRadioButton.IsChecked)
                 {
-                    _userService.Delete((await _userService.GetUserByLoginAsync(((User)DataGrid.SelectedItem).Login)).Id);
-                    await _eventLogService.AddAsync(new BTDCore.Models.EventLog
+                    if (LoginWindow.CurrentUser.UserCapabilities.CanDeleteUser)
                     {
-                        UserId = LoginWindow.CurrentUser.Id,
-                        TableId = await _tableService.GetTableByIdAsync((int)TableName.Users),
-                        SystemEventId = (int)BTDSystemEvents.Deleting,
-                        DateOfEvent = DateTime.Now
-                    });
+                        _userService.Delete((await _userService.GetUserByLoginAsync(((ViewUserDetails)DataGrid.SelectedItem).Login)).Id);
+                        await _eventLogService.AddAsync(new BTDCore.Models.EventLog
+                        {
+                            UserId = LoginWindow.CurrentUser.Id,
+                            TableId = await _tableService.GetTableByIdAsync((int)TableName.Users),
+                            SystemEventId = (int)BTDSystemEvents.Deleting,
+                            DateOfEvent = DateTime.Now
+                        });
+                    }
+                    else
+                    {
+                        SystemSounds.Hand.Play();
+                        MessageBox.Show("Вы не можете редактировать пользователей!");
+                        return;
+                    }                   
                 }
-                else
-                {
-                    SystemSounds.Hand.Play();
-                    MessageBox.Show("Вы не можете удалять пользователей!");
-                    return;
-                }
-                if ((bool)NotificationRadioButton.IsChecked)
+                else if ((bool)NotificationRadioButton.IsChecked)
                 {
                     _noticeService.Delete((await _noticeService.GetNoticeByDesignationAsync(((ViewNotice)DataGrid.SelectedItem).Designation)).Id);
                     await _eventLogService.AddAsync(new BTDCore.Models.EventLog
@@ -531,7 +534,7 @@ namespace BTD.Windows
         }
 
         private async void LeaveButton_Click(object sender, RoutedEventArgs e)
-        {
+        {           
             LoginWindow loginWindow = new LoginWindow();
             loginWindow.Show();
             Close();
@@ -541,8 +544,8 @@ namespace BTD.Windows
                 TableId = default,
                 SystemEventId = (int)BTDSystemEvents.ExitFromSystem,
                 DateOfEvent = DateTime.Now
-            });
-
+            }); 
+            LoginWindow.CurrentUser = new User();
         }
 
         private void HelpButton_Click(object sender, RoutedEventArgs e)

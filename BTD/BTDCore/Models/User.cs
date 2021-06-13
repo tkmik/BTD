@@ -25,5 +25,10 @@ namespace BTDCore.Models
         [Required]
         public UserCapability UserCapabilities { get; set; }
         public ICollection<EventLog> Events { get; set; }
+        public User()
+        {
+            UserDetails = new UserProfile();
+            UserCapabilities = new UserCapability();
+        }
     }
 }

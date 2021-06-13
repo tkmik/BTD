@@ -20,11 +20,13 @@ namespace BTDService.Services.db.Users
         public void Add(User item)
         {
             _dbContext.Users.Add(item);
+            Save();
         }
 
         public async Task AddAsync(User item)
         {
             await _dbContext.Users.AddAsync(item);
+            await SaveAsync();
         }
 
         public string Delete(int id)
@@ -32,7 +34,8 @@ namespace BTDService.Services.db.Users
             var item = GetById(id);
             if (item is not null)
             {
-                _dbContext.Entry(item).State = EntityState.Deleted;
+                item.UserDetails.IsDeleted = true;
+                _dbContext.Entry(item).State = EntityState.Modified;
                 Save();
                 return "Card was deleted";
             }

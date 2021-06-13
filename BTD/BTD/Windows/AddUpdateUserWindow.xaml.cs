@@ -1,5 +1,6 @@
 ﻿using BTDCore.Models;
 using BTDCore.ViewModels;
+using BTDService.Services.Crypto;
 using BTDService.Services.db.EventsLogs;
 using BTDService.Services.db.Role;
 using BTDService.Services.db.Tables;
@@ -20,12 +21,14 @@ namespace BTD.Windows
         IUserService _userService;
         IEventsLogService _eventLogService;
         ITableService _tableService;
+        ICrypto _crypto;
         public AddUpdateUserWindow(ViewUserDetails user = default)
         {
             _roleService = new RoleService();
             _userService = new UserService();
             _eventLogService = new EventsLogService();
             _tableService = new TableService();
+            _crypto = new CryptoService();
             InitializeComponent();
             if (user is not null)
             {
@@ -47,18 +50,18 @@ namespace BTD.Windows
             SaveButton.Click += async (sender, e) =>
             {
                 if (!LoginTextBox.Text.Equals("")
-                && !PasswordTextBox.Password.Equals("")
+                &&!PasswordTextBox.Password.Equals("")
                 &&!FirstNameTextBox.Text.Equals("")
                 &&!LastNameTextBox.Text.Equals("")
                 &&!DateOfBirthDatePicker.Text.Equals("")
                 &&!SerialNumberTextBox.Text.Equals("")
-                &&!(RoleComboBox.SelectedItem is not null))
+                &&!(RoleComboBox.SelectedItem is null))
                 {
                     if (user is not null)
                     {
                         User oldUser = await _userService.GetUserByLoginAsync(user.Login);
                         oldUser.Login = LoginTextBox.Text;
-                        oldUser.Password = PasswordTextBox.Password;
+                        oldUser.Password = _crypto.Encrypt(PasswordTextBox.Password);
                         oldUser.RoleId = RoleComboBox.SelectedIndex;
                         oldUser.UserDetails.FirstName = FirstNameTextBox.Text;
                         oldUser.UserDetails.LastName = LastNameTextBox.Text;
@@ -84,7 +87,7 @@ namespace BTD.Windows
                     {
                         User newUser = new User();
                         newUser.Login = LoginTextBox.Text;
-                        newUser.Password = PasswordTextBox.Password;
+                        newUser.Password = _crypto.Encrypt(PasswordTextBox.Password);
                         newUser.RoleId = RoleComboBox.SelectedIndex;
                         newUser.UserDetails.FirstName = FirstNameTextBox.Text;
                         newUser.UserDetails.LastName = LastNameTextBox.Text;
