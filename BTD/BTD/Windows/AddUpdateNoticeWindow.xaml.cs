@@ -38,7 +38,7 @@ namespace BTD.Windows
             {
                 var copyFile =
                        new FileInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
-                                    @"\Notices\");
+                                    @"\");
                 if (!DesignationTextBox.Text.Equals("")
                     && !ChoiceButton.Content.Equals("")
                     && !ChoiceButton.Content.Equals("Загрузить"))
@@ -95,7 +95,7 @@ namespace BTD.Windows
             var openDlg = new OpenFileDialog();
             var copyFile =
                         new FileInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
-                                     @"\Notices\");
+                                     @"\");
             try
             {
                 openDlg.Filter = "Word documents|*.docx;*.doc;*.odt;*.rtf|PDF|*.pdf";

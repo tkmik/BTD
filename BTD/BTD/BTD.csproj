@@ -34,6 +34,9 @@
     <None Update="helpBTD.chm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Izveschenie_ob_izmenenii_forma_1_po_gost_2_503-2013.odt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
