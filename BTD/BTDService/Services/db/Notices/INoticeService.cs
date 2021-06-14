@@ -12,5 +12,6 @@ namespace BTDService.Services.db.Notices
     {
         Task<List<ViewNotice>> GetNoticesAsync(string search = default);
         Task<Notice> GetNoticeByDesignationAsync(string designation);
+        Notice GetNoticeByDesignation(string designation);
     }
 }

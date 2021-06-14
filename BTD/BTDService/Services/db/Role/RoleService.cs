@@ -1,12 +1,22 @@
-﻿using BTDCore.Models;
+﻿using BTDCore;
+using System.Linq;
+using BTDCore.Models;
 using BTDService.Services.db.Users;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace BTDService.Services.db.Role
 {
     public class RoleService : IRoleService
     {
         IUserService _userService;
+        private readonly AppDbContext _dbContext;
+        public RoleService()
+        {
+            _dbContext = new AppDbContext();
+            _userService = new UserService();
+        }
         public UserCapability Create(User user, UserCapability capability)
         {
             
@@ -21,6 +31,11 @@ namespace BTDService.Services.db.Role
                 CanDeleteUser = capability.CanDeleteUser,
             };
             return capa;
+        }
+
+        public int GetRoleIndex(string role)
+        {
+            return _dbContext.Roles.FirstOrDefault(r => r.Name.Equals(role)).Id;
         }
 
         public List<RoleEnum> Roles(string role = default)

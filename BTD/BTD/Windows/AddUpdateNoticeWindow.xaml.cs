@@ -40,11 +40,12 @@ namespace BTD.Windows
                        new FileInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
                                     @"\Notices\");
                 if (!DesignationTextBox.Text.Equals("")
-                    && !ChoiceButton.Content.Equals(""))
+                    && !ChoiceButton.Content.Equals("")
+                    && !ChoiceButton.Content.Equals("Загрузить"))
                 {
                     if (notice is not null)
                     {
-                        var note = _noticeService.GetNoticeByDesignationAsync(notice.Designation).Result;
+                        var note = _noticeService.GetNoticeByDesignation(notice.Designation);
                         note.Designation = DesignationTextBox.Text;
                         note.Name = ChoiceButton.Content.ToString();
                         note.Note = NoteTextBlock.Text;
@@ -97,7 +98,7 @@ namespace BTD.Windows
                                      @"\Notices\");
             try
             {
-                openDlg.Filter = "Word documents|*.docx";
+                openDlg.Filter = "Word documents|*.docx;*.doc;*.odt;*.rtf|PDF|*.pdf";
                 if (!openDlg.ShowDialog().GetValueOrDefault())
                     return;
                 var file = new FileInfo(openDlg.FileName);

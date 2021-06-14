@@ -70,6 +70,11 @@ namespace BTDService.Services.db.Notices
             return await _dbContext.Notices.FirstOrDefaultAsync(notice => notice.Id == id);
         }
 
+        public Notice GetNoticeByDesignation(string designation)
+        {
+            return _dbContext.Notices.FirstOrDefault(notice => notice.Designation == designation);
+        }
+
         public async Task<Notice> GetNoticeByDesignationAsync(string designation)
         {
             return await _dbContext.Notices.FirstOrDefaultAsync(notice => notice.Designation == designation);

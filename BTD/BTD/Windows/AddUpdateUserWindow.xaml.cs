@@ -34,7 +34,8 @@ namespace BTD.Windows
             {
                 var userCapability = _userService.GetUserByLogin(user.Login);
                 LoginTextBox.Text = user.Login;
-                RoleComboBox.SelectedItem = _roleService.Roles(user.RoleName);
+                RoleComboBox.SelectedItem = _roleService.GetRoleIndex(user.RoleName);
+                int x = _roleService.GetRoleIndex(user.RoleName);
                 FirstNameTextBox.Text = user.FirstName;
                 LastNameTextBox.Text = user.LastName;
                 DateOfBirthDatePicker.Text = user.DateOfBirth.ToString();
@@ -46,11 +47,11 @@ namespace BTD.Windows
                 CreateUserCheckBox.IsChecked = userCapability.UserCapabilities.CanMakeNewUser;
                 EditUserCheckBox.IsChecked = userCapability.UserCapabilities.CanEditUser;
                 DeleteUserCheckBox.IsChecked = userCapability.UserCapabilities.CanDeleteUser;
+                IsDeletedUserCheckBox.IsChecked = user.IsDeleted;
             }
             SaveButton.Click += async (sender, e) =>
             {
                 if (!LoginTextBox.Text.Equals("")
-                &&!PasswordTextBox.Password.Equals("")
                 &&!FirstNameTextBox.Text.Equals("")
                 &&!LastNameTextBox.Text.Equals("")
                 &&!DateOfBirthDatePicker.Text.Equals("")
@@ -61,12 +62,16 @@ namespace BTD.Windows
                     {
                         User oldUser = await _userService.GetUserByLoginAsync(user.Login);
                         oldUser.Login = LoginTextBox.Text;
-                        oldUser.Password = _crypto.Encrypt(PasswordTextBox.Password);
-                        oldUser.RoleId = RoleComboBox.SelectedIndex;
+                        if (!PasswordTextBox.Password.Equals(""))
+                        {
+                            oldUser.Password = _crypto.Encrypt(PasswordTextBox.Password);
+                        }
+                        oldUser.RoleId = RoleComboBox.SelectedIndex + 1;
                         oldUser.UserDetails.FirstName = FirstNameTextBox.Text;
                         oldUser.UserDetails.LastName = LastNameTextBox.Text;
                         oldUser.UserDetails.DateOfBirth = Convert.ToDateTime(DateOfBirthDatePicker.Text);
                         oldUser.UserDetails.SerialNumber = SerialNumberTextBox.Text;
+                        oldUser.UserDetails.IsDeleted = (bool)IsDeletedUserCheckBox.IsChecked;
                         oldUser.UserCapabilities.CanAddInfo = (bool)CreateDocCheckBox.IsChecked;
                         oldUser.UserCapabilities.CanEditInfo = (bool)EditDocCheckBox.IsChecked;
                         oldUser.UserCapabilities.CanDeleteInfo = (bool)DeleteDocCheckBox.IsChecked;
@@ -87,12 +92,20 @@ namespace BTD.Windows
                     {
                         User newUser = new User();
                         newUser.Login = LoginTextBox.Text;
-                        newUser.Password = _crypto.Encrypt(PasswordTextBox.Password);
-                        newUser.RoleId = RoleComboBox.SelectedIndex;
+                        if (PasswordTextBox.Password.Equals(""))
+                        {
+                            newUser.Password = (await _userService.GetUserByLoginAsync(user.Login)).Password;
+                        }
+                        else
+                        {
+                            newUser.Password = _crypto.Encrypt(PasswordTextBox.Password);
+                        }                        
+                        newUser.RoleId = RoleComboBox.SelectedIndex + 1;
                         newUser.UserDetails.FirstName = FirstNameTextBox.Text;
                         newUser.UserDetails.LastName = LastNameTextBox.Text;
                         newUser.UserDetails.DateOfBirth = Convert.ToDateTime(DateOfBirthDatePicker.Text);
                         newUser.UserDetails.SerialNumber = SerialNumberTextBox.Text;
+                        newUser.UserDetails.IsDeleted = false;
                         newUser.UserCapabilities.CanAddInfo = (bool)CreateDocCheckBox.IsChecked;
                         newUser.UserCapabilities.CanEditInfo = (bool)EditDocCheckBox.IsChecked;
                         newUser.UserCapabilities.CanDeleteInfo = (bool)DeleteDocCheckBox.IsChecked;

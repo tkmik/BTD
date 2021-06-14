@@ -254,7 +254,7 @@ namespace BTD.Windows
             else if ((bool)EventLogRadioButton.IsChecked)
             {
                 SystemSounds.Hand.Play();
-                MessageBox.Show("Вы не можете добавлять событие!");
+                MessageBox.Show("Вы не можете редактировать событие!");
                 return;
             }
             else
@@ -328,7 +328,7 @@ namespace BTD.Windows
             else if ((bool)EventLogRadioButton.IsChecked)
             {
                 SystemSounds.Hand.Play();
-                MessageBox.Show("Вы не можете добавлять событие!");
+                MessageBox.Show("Вы не можете удалять событие!");
                 return;
             }
             SystemSounds.Hand.Play();

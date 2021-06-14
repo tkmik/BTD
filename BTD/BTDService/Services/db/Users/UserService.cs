@@ -35,7 +35,8 @@ namespace BTDService.Services.db.Users
             if (item is not null)
             {
                 item.UserDetails.IsDeleted = true;
-                _dbContext.Entry(item).State = EntityState.Modified;
+                _dbContext.Users.Update(item);
+                //_dbContext.Entry(item).State = EntityState.Modified;
                 Save();
                 return "Card was deleted";
             }
@@ -65,12 +66,11 @@ namespace BTDService.Services.db.Users
             if (search is not null)
             {
                 return await _dbContext.ViewUsersDetails.Where(
-                    user => user.IsDeleted == false 
-                    && (user.Login.Contains(search) 
+                    user => user.Login.Contains(search) 
                     || user.FirstName.Contains(search)
-                    || user.LastName.Contains(search))).ToListAsync();
+                    || user.LastName.Contains(search)).ToListAsync();
             }
-            return await _dbContext.ViewUsersDetails.Where(user => user.IsDeleted == false).ToListAsync();
+            return await _dbContext.ViewUsersDetails.ToListAsync();
 
         }
 

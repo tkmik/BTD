@@ -35,6 +35,7 @@
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
+                <RowDefinition/>
                 <RowDefinition Height="0.7*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -282,16 +283,30 @@
                               HorizontalAlignment="Center"/>
                 </Grid>
             </StackPanel>
-            <StackPanel Grid.Row="9">
+            <StackPanel Grid.Row="10">
                 <Grid>
-                    <Label Content="Работа с пользователями"
+                    <Label Content="Удален?"
                            Margin="10"
                            HorizontalAlignment="Right"
                            Foreground="Gray"
                            VerticalAlignment="Center"/>
                 </Grid>
             </StackPanel>
-            <StackPanel Grid.Row="10" Grid.ColumnSpan="2">
+            <StackPanel x:Name="IsDeletedPanel" VerticalAlignment="Center" Grid.Row="10" Grid.Column="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <CheckBox
+                        x:Name="IsDeletedUserCheckBox"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"/>
+                </Grid>
+            </StackPanel>
+            <StackPanel Grid.Row="11" Grid.ColumnSpan="2">
                 <Grid>
                     <Button x:Name="CancelButton"
                             Style="{StaticResource ModernButton}"
@@ -304,7 +319,7 @@
 
                 </Grid>
             </StackPanel>
-            <StackPanel Grid.Row="10" Grid.Column="1">
+            <StackPanel Grid.Row="11" Grid.Column="1">
                 <Grid>
                     <Button x:Name="SaveButton"
                             Style="{StaticResource ModernButton}"
